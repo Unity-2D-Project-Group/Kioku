@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Memories Companion App</string>
+    <string name="app_name">Kioku</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
