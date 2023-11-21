@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,6 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import pt.iade.memoriescompanionapp.MainActivity;
+import pt.iade.memoriescompanionapp.MyProfileActivity;
 import pt.iade.memoriescompanionapp.R;
 import pt.iade.memoriescompanionapp.ui.login.LoginViewModel;
 import pt.iade.memoriescompanionapp.ui.login.LoginViewModelFactory;
@@ -78,8 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 setResult(Activity.RESULT_OK);
 
-                //Complete and destroy login activity once successful
-                finish();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                Log.d("ACCU_CHANGE", sensor.toString() + " - " + accuracy);
+                Log.d("ACCURACY_CHANGE", sensor.toString() + " - " + accuracy);
             }
         }, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
@@ -81,7 +81,15 @@ public class MainActivity extends AppCompatActivity {
         petSelectButton = (Button)findViewById(R.id.petSelectButton);
         petSelectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, activity_sensors.class);
+                Intent intent = new Intent(MainActivity.this, PetSelectActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        myProfileButton = (Button)findViewById(R.id.myProfileButton);
+        myProfileButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
                 startActivity(intent);
             }
         });
