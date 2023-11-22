@@ -6,4 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".PetSelectActivity">
 
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:backgroundTint="#FF00DD"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/petSelectButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Pet Select"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottomAppBar3" />
+
+    <Button
+        android:id="@+id/petButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pet"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar3"
+        app:layout_constraintEnd_toStartOf="@+id/myProfileButton3"
+        app:layout_constraintStart_toEndOf="@+id/petSelectButton3"
+        app:layout_constraintTop_toTopOf="@+id/bottomAppBar3" />
+
+    <Button
+        android:id="@+id/myProfileButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="My Profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottomAppBar3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

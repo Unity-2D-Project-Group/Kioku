@@ -12,15 +12,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button petSelectButton;
     private Button myProfileButton;
+    private Button petButton;
+    private ImageButton leftArrowButton;
+    private ImageButton rightArrowButton;
 
-    private int place;
+    private boolean bathroom = false;
+    private boolean forest = true;
+    private boolean gym = false;
 
     private SensorManager sensorManager;
     private Sensor accelSensor;
@@ -41,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupComponents();
 
-        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(new SensorEventListener() {
             @Override
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         y = Float.parseFloat(String.valueOf(event.values[1]));
                         z = Float.parseFloat(String.valueOf(event.values[2]));
 
-                        float speed = Math.abs(x + y+ z - last_x - last_y - last_z) / diffTime * 10000;
+                        float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
                         if (speed > SHAKE_THRESHOLD) {
                             Log.d("sensor", "shake detected w/ speed: " + speed);
@@ -75,22 +80,55 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("ACCURACY_CHANGE", sensor.toString() + " - " + accuracy);
             }
         }, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        ImageView img = (ImageView) findViewById(R.id.background);
+        img.setImageResource(R.drawable.forest);
     }
 
     public void setupComponents() {
-        petSelectButton = (Button)findViewById(R.id.petSelectButton);
+        petSelectButton = (Button) findViewById(R.id.petSelectButton);
         petSelectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, PetSelectActivity.class);
                 startActivity(intent);
+                Log.d("Pet Select Button", "redirected to pet select screen");
             }
         });
 
-        myProfileButton = (Button)findViewById(R.id.myProfileButton);
+        petButton = (Button) findViewById(R.id.petButton);
+        petButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                Log.d("My Profile Button", "redirected to my profile screen");
+            }
+        });
+
+        myProfileButton = (Button) findViewById(R.id.myProfileButton);
         myProfileButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
                 startActivity(intent);
+                Log.d("My Profile Button", "redirected to my profile screen");
+            }
+        });
+
+        leftArrowButton = (ImageButton) findViewById(R.id.leftArrow);
+        leftArrowButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                /** if (forest = true */
+                ImageView img = (ImageView) findViewById(R.id.background);
+                img.setImageResource(R.drawable.bathroom);
+                Log.d("LEFT ARROW", "pressed left arrow");
+            }
+        });
+
+        rightArrowButton = (ImageButton) findViewById(R.id.rightArrow);
+        rightArrowButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ImageView img = (ImageView) findViewById(R.id.background);
+                img.setImageResource(R.drawable.gym);
+                Log.d("RIGHT ARROW", "pressed right arrow");
             }
         });
     }
