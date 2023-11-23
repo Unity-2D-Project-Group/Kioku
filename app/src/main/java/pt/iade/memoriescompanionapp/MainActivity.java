@@ -125,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
                     img.setImageResource(R.drawable.forest);
                     forest = true;
                     gym = false;
+                }else if (bathroom == true){
+                    ImageView img = (ImageView) findViewById(R.id.background);
+                    img.setImageResource(R.drawable.gym);
+                    bathroom = false;
+                    gym = true;
                 }
                 Log.d("LEFT ARROW", "pressed left arrow");
             }
@@ -144,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
                     img.setImageResource(R.drawable.forest);
                     forest = true;
                     bathroom = false;
+                }else if (gym == true){
+                    ImageView img = (ImageView) findViewById(R.id.background);
+                    img.setImageResource(R.drawable.bathroom);
+                    gym = false;
+                    bathroom = true;
                 }
                 Log.d("RIGHT ARROW", "pressed right arrow");
             }
