@@ -37,15 +37,13 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, MainActivity.class);
                 startActivity(intent);
-                Log.d("My Profile Button", "redirected to my profile screen");
+                Log.d("Pet Button", "redirected to pet screen");
             }
         });
 
         myProfileButton2 = (Button) findViewById(R.id.myProfileButton2);
         myProfileButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MyProfileActivity.this, MyProfileActivity.class);
-                startActivity(intent);
                 Log.d("My Profile Button", "redirected to my profile screen");
             }
         });

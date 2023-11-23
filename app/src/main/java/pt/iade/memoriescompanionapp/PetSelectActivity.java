@@ -26,8 +26,6 @@ public class PetSelectActivity extends AppCompatActivity {
         petSelectButton3 = (Button) findViewById(R.id.petSelectButton3);
         petSelectButton3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(PetSelectActivity.this, PetSelectActivity.class);
-                startActivity(intent);
                 Log.d("Pet Select Button", "redirected to pet select screen");
             }
         });
@@ -37,7 +35,7 @@ public class PetSelectActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PetSelectActivity.this, MainActivity.class);
                 startActivity(intent);
-                Log.d("My Profile Button", "redirected to my profile screen");
+                Log.d("Pet Button", "redirected to pet screen");
             }
         });
 

@@ -98,9 +98,7 @@ public class MainActivity extends AppCompatActivity {
         petButton = (Button) findViewById(R.id.petButton);
         petButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
-                Log.d("My Profile Button", "redirected to my profile screen");
+                Log.d("Pet Button", "redirected to pet screen");
             }
         });
 
