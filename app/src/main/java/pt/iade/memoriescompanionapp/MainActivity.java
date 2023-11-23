@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton rightArrowButton;
 
     private boolean bathroom = false;
-    private boolean forest = true;
+    private boolean forest = false;
     private boolean gym = false;
 
     private SensorManager sensorManager;
@@ -46,46 +46,52 @@ public class MainActivity extends AppCompatActivity {
 
         setupComponents();
 
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                if (accelSensor == sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)) {
-                    long curTime = System.currentTimeMillis();
-                    // only allow one update every 100ms.
-                    if ((curTime - lastUpdate) > 100) {
-                        long diffTime = (curTime - lastUpdate);
-                        lastUpdate = curTime;
+        if (forest) {
+            sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            sensorManager.registerListener(new SensorEventListener() {
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    if (accelSensor == sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)) {
+                        long curTime = System.currentTimeMillis();
+                        // only allow one update every 100ms.
+                        if ((curTime - lastUpdate) > 100) {
+                            long diffTime = (curTime - lastUpdate);
+                            lastUpdate = curTime;
 
-                        x = Float.parseFloat(String.valueOf(event.values[0]));
-                        y = Float.parseFloat(String.valueOf(event.values[1]));
-                        z = Float.parseFloat(String.valueOf(event.values[2]));
+                            x = Float.parseFloat(String.valueOf(event.values[0]));
+                            y = Float.parseFloat(String.valueOf(event.values[1]));
+                            z = Float.parseFloat(String.valueOf(event.values[2]));
 
-                        float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+                            float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-                        if (speed > SHAKE_THRESHOLD) {
-                            Log.d("sensor", "shake detected w/ speed: " + speed);
+                            if (speed > SHAKE_THRESHOLD) {
+                                Log.d("sensor", "shake detected w/ speed: " + speed);
+                            }
+
+                            last_x = x;
+                            last_y = y;
+                            last_z = z;
                         }
-
-                        last_x = x;
-                        last_y = y;
-                        last_z = z;
                     }
                 }
-            }
 
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                Log.d("ACCURACY_CHANGE", sensor.toString() + " - " + accuracy);
-            }
-        }, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                    Log.d("ACCURACY_CHANGE", sensor.toString() + " - " + accuracy);
+                }
+            }, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
 
-        ImageView img = (ImageView) findViewById(R.id.background);
-        img.setImageResource(R.drawable.forest);
+        if (forest) {
+            ImageView img = (ImageView) findViewById(R.id.background);
+            img.setImageResource(R.drawable.forest);
+        }
     }
 
     public void setupComponents() {
+        forest = true;
+
         petSelectButton = (Button) findViewById(R.id.petSelectButton);
         petSelectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -114,22 +120,19 @@ public class MainActivity extends AppCompatActivity {
         leftArrowButton = (ImageButton) findViewById(R.id.leftArrow);
         leftArrowButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (forest == true) {
+                if (forest) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.bathroom);
                     forest = false;
                     bathroom = true;
+                    Log.d("BATHROOM", "bathroom true");
                 }
-                else if (gym == true) {
+                else if (gym) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.forest);
                     forest = true;
                     gym = false;
-                }else if (bathroom == true){
-                    ImageView img = (ImageView) findViewById(R.id.background);
-                    img.setImageResource(R.drawable.gym);
-                    bathroom = false;
-                    gym = true;
+                    Log.d("FOREST", "forest true");
                 }
                 Log.d("LEFT ARROW", "pressed left arrow");
             }
@@ -138,22 +141,19 @@ public class MainActivity extends AppCompatActivity {
         rightArrowButton = (ImageButton) findViewById(R.id.rightArrow);
         rightArrowButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (forest == true) {
+                if (forest) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.gym);
                     forest = false;
                     gym = true;
+                    Log.d("GYM", "gym true");
                 }
-                else if (bathroom == true) {
+                else if (bathroom) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.forest);
                     forest = true;
                     bathroom = false;
-                }else if (gym == true){
-                    ImageView img = (ImageView) findViewById(R.id.background);
-                    img.setImageResource(R.drawable.bathroom);
-                    gym = false;
-                    bathroom = true;
+                    Log.d("FOREST", "forest true");
                 }
                 Log.d("RIGHT ARROW", "pressed right arrow");
             }
