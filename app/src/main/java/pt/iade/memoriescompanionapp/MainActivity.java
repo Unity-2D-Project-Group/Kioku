@@ -114,9 +114,18 @@ public class MainActivity extends AppCompatActivity {
         leftArrowButton = (ImageButton) findViewById(R.id.leftArrow);
         leftArrowButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /** if (forest = true */
-                ImageView img = (ImageView) findViewById(R.id.background);
-                img.setImageResource(R.drawable.bathroom);
+                if (forest == true) {
+                    ImageView img = (ImageView) findViewById(R.id.background);
+                    img.setImageResource(R.drawable.bathroom);
+                    forest = false;
+                    bathroom = true;
+                }
+                else if (gym == true) {
+                    ImageView img = (ImageView) findViewById(R.id.background);
+                    img.setImageResource(R.drawable.forest);
+                    forest = true;
+                    gym = false;
+                }
                 Log.d("LEFT ARROW", "pressed left arrow");
             }
         });
@@ -124,8 +133,18 @@ public class MainActivity extends AppCompatActivity {
         rightArrowButton = (ImageButton) findViewById(R.id.rightArrow);
         rightArrowButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ImageView img = (ImageView) findViewById(R.id.background);
-                img.setImageResource(R.drawable.gym);
+                if (forest == true) {
+                    ImageView img = (ImageView) findViewById(R.id.background);
+                    img.setImageResource(R.drawable.gym);
+                    forest = false;
+                    gym = true;
+                }
+                else if (bathroom == true) {
+                    ImageView img = (ImageView) findViewById(R.id.background);
+                    img.setImageResource(R.drawable.forest);
+                    forest = true;
+                    bathroom = false;
+                }
                 Log.d("RIGHT ARROW", "pressed right arrow");
             }
         });
