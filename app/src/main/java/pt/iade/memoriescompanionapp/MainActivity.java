@@ -10,6 +10,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -38,7 +40,20 @@ public class MainActivity extends AppCompatActivity {
     private float last_x;
     private float last_y;
     private float last_z;
-
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (bathroom) {
+            switch (event.getAction()) {
+                case (MotionEvent.ACTION_MOVE):
+                    Log.d("Fuck this shit", "Action was MOVE");
+                    return true;
+                default:
+                    return super.onTouchEvent(event);
+            }
+        }else{
+            return false;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                             float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-                            if (speed > SHAKE_THRESHOLD) {
+                            if (speed > SHAKE_THRESHOLD && forest) {
                                 Log.d("sensor", "shake detected w/ speed: " + speed);
                             }
 
@@ -87,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             ImageView img = (ImageView) findViewById(R.id.background);
             img.setImageResource(R.drawable.forest);
         }
+
     }
 
     public void setupComponents() {
