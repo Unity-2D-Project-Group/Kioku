@@ -40,20 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private float last_x;
     private float last_y;
     private float last_z;
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (bathroom) {
-            switch (event.getAction()) {
-                case (MotionEvent.ACTION_MOVE):
-                    Log.d("Fuck this shit", "Action was MOVE");
-                    return true;
-                default:
-                    return super.onTouchEvent(event);
-            }
-        }else{
-            return false;
-        }
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             sensorManager.registerListener(new SensorEventListener() {
                 @Override
                 public void onSensorChanged(SensorEvent event) {
-                    if (accelSensor == sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)) {
+                    if (forest && accelSensor == sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)) {
                         long curTime = System.currentTimeMillis();
                         // only allow one update every 100ms.
                         if ((curTime - lastUpdate) > 100) {
@@ -102,7 +89,21 @@ public class MainActivity extends AppCompatActivity {
             ImageView img = (ImageView) findViewById(R.id.background);
             img.setImageResource(R.drawable.forest);
         }
+    }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (bathroom) {
+            switch (event.getAction()) {
+                case (MotionEvent.ACTION_MOVE):
+                    Log.d("Fuck this shit", "Action was MOVE");
+                    return true;
+                default:
+                    return super.onTouchEvent(event);
+            }
+        }else{
+            return false;
+        }
     }
 
     public void setupComponents() {
