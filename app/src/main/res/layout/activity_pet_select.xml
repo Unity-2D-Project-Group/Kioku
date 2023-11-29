@@ -49,8 +49,7 @@
                     android:layout_height="150dp"
                     android:layout_marginHorizontal="10dp"
                     android:background="#633D62BD"
-                    android:src="@tools:sample/avatars"
-                    app:srcCompat="@drawable/kirby" />
+                    android:src="@drawable/kirby" />
             </TableRow>
 
             <TableRow
@@ -66,8 +65,7 @@
                     android:layout_height="150dp"
                     android:layout_marginHorizontal="10dp"
                     android:background="#46C51A1A"
-                    android:src="@tools:sample/avatars"
-                    app:srcCompat="@drawable/kirby" />
+                    android:src="@drawable/kirby" />
 
             </TableRow>
 
