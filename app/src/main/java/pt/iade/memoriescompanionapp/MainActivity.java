@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,13 +26,23 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton leftArrowButton;
     private ImageButton rightArrowButton;
 
+    private TextView hygieneText;
+    private TextView happynessText;
+    private TextView hungrynessText;
+    private TextView fruitText;
+
     private boolean bathroom = false;
     private boolean forest = false;
     private boolean gym = false;
 
+    private int hygiene;
+    private int happyness;
+    private int hungryness;
+    private int fruit;
+
     private SensorManager sensorManager;
     private Sensor accelSensor;
-
+    private Sensor stepSensor;
     private static final int SHAKE_THRESHOLD = 800;
     private long lastUpdate;
     private float x;
@@ -41,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private float last_y;
     private float last_z;
 
+    private long steps = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,42 +61,57 @@ public class MainActivity extends AppCompatActivity {
 
         setupComponents();
 
-        if (forest) {
-            sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-            accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            sensorManager.registerListener(new SensorEventListener() {
-                @Override
-                public void onSensorChanged(SensorEvent event) {
-                    if (forest && accelSensor == sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)) {
-                        long curTime = System.currentTimeMillis();
-                        // only allow one update every 100ms.
-                        if ((curTime - lastUpdate) > 100) {
-                            long diffTime = (curTime - lastUpdate);
-                            lastUpdate = curTime;
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        sensorManager.registerListener(new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (forest && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                    long curTime = System.currentTimeMillis();
+                    // only allow one update every 100ms.
+                    if ((curTime - lastUpdate) > 100) {
+                        long diffTime = (curTime - lastUpdate);
+                        lastUpdate = curTime;
 
-                            x = Float.parseFloat(String.valueOf(event.values[0]));
-                            y = Float.parseFloat(String.valueOf(event.values[1]));
-                            z = Float.parseFloat(String.valueOf(event.values[2]));
+                        x = Float.parseFloat(String.valueOf(event.values[0]));
+                        y = Float.parseFloat(String.valueOf(event.values[1]));
+                        z = Float.parseFloat(String.valueOf(event.values[2]));
 
-                            float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+                        float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-                            if (speed > SHAKE_THRESHOLD && forest) {
-                                Log.d("sensor", "shake detected w/ speed: " + speed);
-                            }
-
-                            last_x = x;
-                            last_y = y;
-                            last_z = z;
+                        if (speed > SHAKE_THRESHOLD && forest) {
+                            Log.d("sensor", "shake detected w/ speed: " + speed);
+                            fruit = fruit + 1;
+                            fruitText.setText(String.valueOf(fruit));
                         }
+
+                        last_x = x;
+                        last_y = y;
+                        last_z = z;
                     }
                 }
 
-                @Override
-                public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                    Log.d("ACCURACY_CHANGE", sensor.toString() + " - " + accuracy);
-                }
-            }, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        }
+                    if (gym && event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+                        float[] values = event.values;
+                        int value = -1;
+
+                        if (values.length > 0) {
+                            value = (int) values[0];
+                        }
+
+                        if (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+                            steps = steps + 1;
+                            Log.d("STEP", "step detected");
+                        }
+                    }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                Log.d("ACCURACY_CHANGE", sensor.toString() + " - " + accuracy);
+            }
+        }, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         if (forest) {
             ImageView img = (ImageView) findViewById(R.id.background);
@@ -96,18 +124,36 @@ public class MainActivity extends AppCompatActivity {
         if (bathroom) {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_MOVE):
-                    Log.d("Fuck this shit", "Action was MOVE");
+                    Log.d("SWIPE", "Action was MOVE");
+                    if (hygiene < 100) {
+                        hygiene = hygiene + 1;
+                    }
+                    hygieneText.setText(String.valueOf(hygiene));
                     return true;
                 default:
                     return super.onTouchEvent(event);
             }
-        }else{
+        } else {
             return false;
         }
     }
 
     public void setupComponents() {
         forest = true;
+        hygiene = 100;
+        happyness = 100;
+        hungryness = 100;
+        fruit = 0;
+
+        hygieneText = (TextView)findViewById(R.id.hygieneText);
+        happynessText = (TextView)findViewById(R.id.happynessText);
+        hungrynessText = (TextView)findViewById(R.id.hungrynessText);
+        fruitText = (TextView)findViewById(R.id.fruitText);
+
+        hygieneText.setText(String.valueOf(hygiene));
+        happynessText.setText(String.valueOf(happyness));
+        hungrynessText.setText(String.valueOf(hungryness));
+        fruitText.setText(String.valueOf(fruit));
 
         petSelectButton = (Button) findViewById(R.id.petSelectButton);
         petSelectButton.setOnClickListener(new View.OnClickListener() {
