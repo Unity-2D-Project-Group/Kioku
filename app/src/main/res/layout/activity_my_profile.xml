@@ -6,26 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".MyProfileActivity">
 
-    <TextView
-        android:id="@+id/logo4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:text="Kioku"
-        android:textAlignment="textStart"
-        android:textColor="#000000"
-        android:textSize="60sp"
+    <ImageView
+        android:id="@+id/logoImage2"
+        android:layout_width="0dp"
+        android:layout_height="145dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/kioku" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:backgroundTint="#FF00DD"
+        app:backgroundTint="#4E57A8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -35,6 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:backgroundTint="#7684FF"
+        android:backgroundTintMode="add"
         android:text="Pet Select"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
+        android:backgroundTint="#7684FF"
+        android:backgroundTintMode="add"
         android:text="My Profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,6 +53,8 @@
         android:id="@+id/petButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#7684FF"
+        android:backgroundTintMode="add"
         android:text="Pet"
         app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar2"
         app:layout_constraintEnd_toStartOf="@+id/myProfileButton2"
@@ -61,11 +62,12 @@
         app:layout_constraintTop_toTopOf="@+id/bottomAppBar2" />
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="409dp"
         android:layout_height="554dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo4">
+        tools:layout_editor_absoluteY="150dp">
 
         <TableRow
             android:layout_width="match_parent"
