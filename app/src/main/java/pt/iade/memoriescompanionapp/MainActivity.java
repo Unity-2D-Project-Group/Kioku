@@ -2,6 +2,7 @@ package pt.iade.memoriescompanionapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -17,12 +18,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button petSelectButton;
     private Button myProfileButton;
     private Button petButton;
+    private Button feed;
+    private Button reduceStats;
     private ImageButton leftArrowButton;
     private ImageButton rightArrowButton;
 
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView happynessText;
     private TextView hungrynessText;
     private TextView fruitText;
+    private TextView currentRoom;
 
     private boolean bathroom = false;
     private boolean forest = false;
@@ -149,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         happynessText = (TextView)findViewById(R.id.happynessText);
         hungrynessText = (TextView)findViewById(R.id.hungrynessText);
         fruitText = (TextView)findViewById(R.id.fruitText);
+        currentRoom = (TextView)findViewById(R.id.currentRoom);
 
         hygieneText.setText(String.valueOf(hygiene));
         happynessText.setText(String.valueOf(happyness));
@@ -180,14 +186,59 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        feed = (Button) findViewById(R.id.feed);
+        feed.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("Feed Button", "clicked the feed button");
+                if (hungryness < 100 && fruit > 0) {
+                    hungryness = hungryness + 5;
+                    hungrynessText.setText(String.valueOf(hungryness));
+                    fruit = fruit - 1;
+                    fruitText.setText(String.valueOf(fruit));
+                    Log.d("Feed Button", "pet fed");
+                } else if (hungryness >= 100 && fruit > 0) {
+                    Toast.makeText(getApplicationContext(), "Pet Already Fed", Toast.LENGTH_LONG).show();
+                    Log.d("Feed Button", "pet already fed");
+                } else if (fruit == 0) {
+                    Log.d("Feed Button", "no fruit");
+                }
+            }
+        });
+
+        reduceStats = (Button) findViewById(R.id.reduceStats);
+        reduceStats.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("Reduce Stats Button", "clicked the reduce stats button");
+                if (hygiene > 50 || happyness > 50 || hungryness > 50) {
+                    hygiene = 50;
+                    hygieneText.setText(String.valueOf(hygiene));
+                    happyness = 50;
+                    happynessText.setText(String.valueOf(happyness));
+                    hungryness = 50;
+                    hungrynessText.setText(String.valueOf(hungryness));
+                    Log.d("Reduce Stats Button", "set stats to 50");
+                } else {
+                    hygiene = 0;
+                    hygieneText.setText(String.valueOf(hygiene));
+                    happyness = 0;
+                    happynessText.setText(String.valueOf(happyness));
+                    hungryness = 0;
+                    hungrynessText.setText(String.valueOf(hungryness));
+                    Log.d("Reduce Stats Button", "set stats to 0");
+                }
+            }
+        });
+
         leftArrowButton = (ImageButton) findViewById(R.id.leftArrow);
         leftArrowButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             public void onClick(View v) {
                 if (forest) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.bathroom);
                     forest = false;
                     bathroom = true;
+                    currentRoom.setText("Bathroom");
                     Log.d("BATHROOM", "bathroom true");
                 }
                 else if (gym) {
@@ -195,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
                     img.setImageResource(R.drawable.forest);
                     forest = true;
                     gym = false;
+                    currentRoom.setText("Forest");
                     Log.d("FOREST", "forest true");
                 }
                 Log.d("LEFT ARROW", "pressed left arrow");
@@ -203,12 +255,14 @@ public class MainActivity extends AppCompatActivity {
 
         rightArrowButton = (ImageButton) findViewById(R.id.rightArrow);
         rightArrowButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             public void onClick(View v) {
                 if (forest) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.gym);
                     forest = false;
                     gym = true;
+                    currentRoom.setText("Gym");
                     Log.d("GYM", "gym true");
                 }
                 else if (bathroom) {
@@ -216,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
                     img.setImageResource(R.drawable.forest);
                     forest = true;
                     bathroom = false;
+                    currentRoom.setText("Forest");
                     Log.d("FOREST", "forest true");
                 }
                 Log.d("RIGHT ARROW", "pressed right arrow");
