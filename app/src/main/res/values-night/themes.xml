@@ -3,5 +3,6 @@
     <style name="Base.Theme.MemoriesCompanionApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <item name="colorPrimaryDark">@color/lightBlue</item>
+        <item name="android:navigationBarColor">@color/darkerBlue</item>
     </style>
 </resources>
