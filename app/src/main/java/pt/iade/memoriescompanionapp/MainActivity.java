@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -30,21 +31,23 @@ public class MainActivity extends AppCompatActivity {
     private Button reduceStats;
     private ImageButton leftArrowButton;
     private ImageButton rightArrowButton;
-
     private TextView hygieneText;
     private TextView happynessText;
     private TextView hungrynessText;
     private TextView fruitText;
+    private TextView fruitTextLabel;
     private TextView currentRoom;
+    private ImageView petImage;
 
     private boolean bathroom = false;
     private boolean forest = false;
     private boolean gym = false;
 
-    private int hygiene;
-    private int happyness;
-    private int hungryness;
-    private int fruit;
+    public static int hygiene = 100;
+    public static int happyness = 100;
+    public static int hungryness = 100;
+    public static int fruit = 0;
+    public static int activePet;
 
     private SensorManager sensorManager;
     private Sensor accelSensor;
@@ -113,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                         if (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
                             steps = steps + 1;
                             Log.d("STEP", "step detected");
+                            Toast.makeText(getApplicationContext(), "step detected", Toast.LENGTH_LONG).show();
                         }
                     }
             }
@@ -164,21 +168,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupComponents() {
         forest = true;
-        hygiene = 100;
-        happyness = 100;
-        hungryness = 100;
-        fruit = 0;
 
         hygieneText = (TextView)findViewById(R.id.hygieneText);
         happynessText = (TextView)findViewById(R.id.happynessText);
         hungrynessText = (TextView)findViewById(R.id.hungrynessText);
         fruitText = (TextView)findViewById(R.id.fruitText);
+        fruitTextLabel = (TextView)findViewById(R.id.fruit);
         currentRoom = (TextView)findViewById(R.id.currentRoom);
+        petImage = (ImageView)findViewById(R.id.petImage);
 
         hygieneText.setText(String.valueOf(hygiene));
         happynessText.setText(String.valueOf(happyness));
         hungrynessText.setText(String.valueOf(hungryness));
         fruitText.setText(String.valueOf(fruit));
+
+        activePet = PetSelectActivity.currentPet;
+        if (activePet == 1) {
+            petImage.setImageDrawable(getResources().getDrawable(R.drawable.bluekirby));
+        } else if (activePet == 2) {
+            petImage.setImageDrawable(getResources().getDrawable(R.drawable.kirby));
+        }
 
         petSelectButton = (Button) findViewById(R.id.petSelectButton);
         petSelectButton.setOnClickListener(new View.OnClickListener() {
@@ -259,6 +268,9 @@ public class MainActivity extends AppCompatActivity {
                     forest = false;
                     bathroom = true;
                     currentRoom.setText("Bathroom");
+                    feed.setVisibility(View.GONE);
+                    fruitText.setVisibility(View.GONE);
+                    fruitTextLabel.setVisibility(View.GONE);
                     Log.d("BATHROOM", "bathroom true");
                 }
                 else if (gym) {
@@ -267,6 +279,9 @@ public class MainActivity extends AppCompatActivity {
                     forest = true;
                     gym = false;
                     currentRoom.setText("Forest");
+                    feed.setVisibility(View.VISIBLE);
+                    fruitText.setVisibility(View.VISIBLE);
+                    fruitTextLabel.setVisibility(View.VISIBLE);
                     Log.d("FOREST", "forest true");
                 }
                 Log.d("LEFT ARROW", "pressed left arrow");
@@ -283,6 +298,9 @@ public class MainActivity extends AppCompatActivity {
                     forest = false;
                     gym = true;
                     currentRoom.setText("Gym");
+                    feed.setVisibility(View.GONE);
+                    fruitText.setVisibility(View.GONE);
+                    fruitTextLabel.setVisibility(View.GONE);
                     Log.d("GYM", "gym true");
                 }
                 else if (bathroom) {
@@ -291,6 +309,9 @@ public class MainActivity extends AppCompatActivity {
                     forest = true;
                     bathroom = false;
                     currentRoom.setText("Forest");
+                    feed.setVisibility(View.VISIBLE);
+                    fruitText.setVisibility(View.VISIBLE);
+                    fruitTextLabel.setVisibility(View.VISIBLE);
                     Log.d("FOREST", "forest true");
                 }
                 Log.d("RIGHT ARROW", "pressed right arrow");

@@ -7,12 +7,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class PetSelectActivity extends AppCompatActivity {
 
+    public static int currentPet = 2;
     private Button petSelectButton3;
     private Button myProfileButton3;
     private Button petButton3;
+    private ImageButton selectPetButton1;
+    private ImageButton selectPetButton2;
+
+    public static int hygieneLevel;
+    public static int happynessLevel;
+    public static int hungrynessLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,40 @@ public class PetSelectActivity extends AppCompatActivity {
                 Intent intent = new Intent(PetSelectActivity.this, MyProfileActivity.class);
                 startActivity(intent);
                 Log.d("My Profile Button", "redirected to my profile screen");
+            }
+        });
+
+        hygieneLevel = MainActivity.hygiene;
+        happynessLevel = MainActivity.happyness;
+        hungrynessLevel = MainActivity.hungryness;
+
+        selectPetButton1 = (ImageButton) findViewById(R.id.selectPetButton1);
+        selectPetButton1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (currentPet == 1) {
+                    Log.d("Pet Select Button 1", "pet already selected");
+                } else if (currentPet == 2) {
+                    currentPet = 1;
+                    MainActivity.hygiene = 100;
+                    MainActivity.happyness = 100;
+                    MainActivity.hungryness = 100;
+                    Log.d("Pet Select Button 1", "pet selected");
+                }
+            }
+        });
+
+        selectPetButton2 = (ImageButton) findViewById(R.id.selectPetButton2);
+        selectPetButton2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (currentPet == 2) {
+                    Log.d("Pet Select Button 2", "pet already selected");
+                } else if (currentPet == 1) {
+                    currentPet = 2;
+                    MainActivity.hygiene = 100;
+                    MainActivity.happyness = 100;
+                    MainActivity.hungryness = 100;
+                    Log.d("Pet Select Button 2", "pet selected");
+                }
             }
         });
     }
