@@ -106,18 +106,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                     if (gym && event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
-                        float[] values = event.values;
-                        int value = -1;
-
-                        if (values.length > 0) {
-                            value = (int) values[0];
-                        }
-
-                        if (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
-                            steps = steps + 1;
-                            Log.d("STEP", "step detected");
-                            Toast.makeText(getApplicationContext(), "step detected", Toast.LENGTH_LONG).show();
-                        }
+                        happyness++;
+                        Log.d("Happiness Increased", "Step detected");
                     }
             }
 
