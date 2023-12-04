@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        customHandler = new Handler();
-        customHandler.postDelayed(petAction, 60000);
+//        customHandler = new Handler();
+//        customHandler.postDelayed(petAction, 60000);
 
         setupComponents();
 
@@ -129,19 +129,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Runnable petAction = new Runnable()
-    {
-        public void run()
-        {
-            if(hungryness > 60 && happyness > 60 && hygiene > 60){
-                Toast.makeText(getApplicationContext(), "You're a good pet owner", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(getApplicationContext(), "You're a shit as a pet owner XD", Toast.LENGTH_LONG).show();
-            }
-            Log.d("Action", "Pet did an action");
-            customHandler.postDelayed(this, 60000);
-        }
-    };
+//    private Runnable petAction = new Runnable()
+//    {
+//        public void run()
+//        {
+//            if(hungryness > 60 && happyness > 60 && hygiene > 60){
+//                Toast.makeText(getApplicationContext(), "You're a good pet owner", Toast.LENGTH_LONG).show();
+//            }else{
+//                Toast.makeText(getApplicationContext(), "You're a shit as a pet owner XD", Toast.LENGTH_LONG).show();
+//            }
+//            Log.d("Action", "Pet did an action");
+//            customHandler.postDelayed(this, 60000);
+//        }
+//    };
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
