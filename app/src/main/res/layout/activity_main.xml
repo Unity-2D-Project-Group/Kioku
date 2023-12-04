@@ -18,8 +18,10 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/forest" />
 
     <ImageView
@@ -30,12 +32,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/kioku" />
 
     <ImageView
         android:id="@+id/petImage"
         android:layout_width="304dp"
-        android:layout_height="339dp"
+        android:layout_height="314dp"
         app:layout_constraintBottom_toBottomOf="@+id/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +141,7 @@
         android:id="@+id/hygiene"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="32dp"
         android:text="Hygiene"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -167,7 +170,7 @@
         android:id="@+id/happyness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="32dp"
         android:text="Happyness"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -195,7 +198,7 @@
         android:id="@+id/hungryness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="32dp"
         android:text="Hungryness"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -209,43 +212,44 @@
         android:id="@+id/fruitText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
         android:text="0"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/feed"
         app:layout_constraintEnd_toEndOf="@+id/fruit"
-        app:layout_constraintStart_toStartOf="@+id/fruit"
-        app:layout_constraintTop_toBottomOf="@+id/fruit" />
+        app:layout_constraintStart_toStartOf="@+id/fruit" />
 
     <TextView
         android:id="@+id/fruit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:text="Fruit"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintBottom_toTopOf="@+id/fruitText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/petImage"
-        app:layout_constraintVertical_bias="0.16000003" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/feed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="#7684FF"
         android:backgroundTintMode="add"
         android:text="Feed"
         app:layout_constraintBottom_toTopOf="@+id/currentRoom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fruitText"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintEnd_toEndOf="@+id/fruitText"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="@+id/fruitText" />
 
     <Button
         android:id="@+id/reduceStats"
