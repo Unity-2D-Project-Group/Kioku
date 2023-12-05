@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private Button myProfileButton;
     private Button petButton;
     private Button feed;
-    private Button reduceStats;
     private Button stepButton;
+    private Button reduceStats;
     private ImageButton leftArrowButton;
     private ImageButton rightArrowButton;
     private TextView hygieneText;
@@ -73,13 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
         setupComponents();
 
-        if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACTIVITY_RECOGNITION)
-                != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getApplicationContext(), "permission denied", Toast.LENGTH_LONG).show();
-            ActivityCompat.requestPermissions(this,
-                    new String[] { android.Manifest.permission.ACTIVITY_RECOGNITION },
-                    MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] { android.Manifest.permission.ACTIVITY_RECOGNITION }, MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
         }
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -174,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupComponents() {
-
         hygieneText = (TextView)findViewById(R.id.hygieneText);
         happynessText = (TextView)findViewById(R.id.happynessText);
         hungrynessText = (TextView)findViewById(R.id.hungrynessText);
