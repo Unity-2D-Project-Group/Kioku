@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Button petButton;
     private Button feed;
     private Button reduceStats;
+    private Button stepButton;
     private ImageButton leftArrowButton;
     private ImageButton rightArrowButton;
     private TextView hygieneText;
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupComponents() {
+
         hygieneText = (TextView)findViewById(R.id.hygieneText);
         happynessText = (TextView)findViewById(R.id.happynessText);
         hungrynessText = (TextView)findViewById(R.id.hungrynessText);
@@ -238,6 +240,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        stepButton = (Button) findViewById(R.id.stepButton);
+        stepButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            Log.d("Step Button", "clicked the step button");
+            if (happyness < 100 && hungryness > 30 && hygiene > 30) {
+                happyness = happyness + 5;
+            }
+            happynessText.setText(String.valueOf(happyness));
+
+            if (hungryness > 0) {
+                hungryness = hungryness - 2;
+            }
+            hungrynessText.setText(String.valueOf(hungryness));
+
+            if (hygiene > 0) {
+                hygiene = hygiene - 2;
+            }
+            hygieneText.setText(String.valueOf(hygiene));
+            }
+        });
+
         reduceStats = (Button) findViewById(R.id.reduceStats);
         reduceStats.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -286,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                     feed.setVisibility(View.VISIBLE);
                     fruitText.setVisibility(View.VISIBLE);
                     fruitTextLabel.setVisibility(View.VISIBLE);
+                    stepButton.setVisibility(View.GONE);
                     Log.d("FOREST", "forest true");
                 }
                 Log.d("LEFT ARROW", "pressed left arrow");
@@ -305,6 +329,7 @@ public class MainActivity extends AppCompatActivity {
                     feed.setVisibility(View.GONE);
                     fruitText.setVisibility(View.GONE);
                     fruitTextLabel.setVisibility(View.GONE);
+                    stepButton.setVisibility(View.VISIBLE);
                     Log.d("GYM", "gym true");
                 }
                 else if (bathroom) {
@@ -321,5 +346,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("RIGHT ARROW", "pressed right arrow");
             }
         });
+
+        stepButton.setVisibility(View.GONE);
     }
 }
