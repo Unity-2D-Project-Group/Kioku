@@ -92,7 +92,7 @@
                 android:id="@+id/usernameShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="John"
+                android:text="Username"
                 android:textAlignment="center"
                 android:textSize="48sp" />
         </TableRow>

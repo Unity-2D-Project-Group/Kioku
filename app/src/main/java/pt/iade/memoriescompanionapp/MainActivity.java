@@ -1,17 +1,19 @@
 package pt.iade.memoriescompanionapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -61,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private float last_y;
     private float last_z;
 
-    private long steps = 0;
-    Handler customHandler;
+    protected static final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupComponents();
+
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACTIVITY_RECOGNITION)
+                != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getApplicationContext(), "permission denied", Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(this,
+                    new String[] { android.Manifest.permission.ACTIVITY_RECOGNITION },
+                    MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
+        }
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -101,21 +111,6 @@ public class MainActivity extends AppCompatActivity {
                         last_z = z;
                     }
                 }
-
-                    if (gym && event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
-                        float[] values = event.values;
-                        int value = -1;
-
-                        if (values.length > 0) {
-                            value = (int) values[0];
-                        }
-
-                        if (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
-                            steps = steps + 1;
-                            Log.d("STEP", "step detected");
-                            Toast.makeText(getApplicationContext(), "step detected", Toast.LENGTH_LONG).show();
-                        }
-                    }
             }
 
             @Override
@@ -123,6 +118,34 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("ACCURACY_CHANGE", sensor.toString() + " - " + accuracy);
             }
         }, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        sensorManager.registerListener(new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (gym && (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR)) {
+                    Log.d("sensor", "step detected");
+                    if (happyness < 100 && hungryness > 30 && hygiene > 30) {
+                        happyness = happyness + 5;
+                    }
+                    happynessText.setText(String.valueOf(happyness));
+
+                    if (hungryness > 0) {
+                        hungryness = hungryness - 2;
+                    }
+                    hungrynessText.setText(String.valueOf(hungryness));
+
+                    if (hygiene > 0) {
+                        hygiene = hygiene - 2;
+                    }
+                    hygieneText.setText(String.valueOf(hygiene));
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                Log.d("ACCURACY_CHANGE", sensor.toString() + " - " + accuracy);
+            }
+        }, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         if (forest) {
             ImageView img = (ImageView) findViewById(R.id.background);
