@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView petImage;
 
     private boolean bathroom = false;
-    private boolean forest = false;
+    private boolean forest = true;
     private boolean gym = false;
 
     public static int hygiene = 100;
@@ -173,8 +173,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupComponents() {
-        forest = true;
-
         hygieneText = (TextView)findViewById(R.id.hygieneText);
         happynessText = (TextView)findViewById(R.id.happynessText);
         hungrynessText = (TextView)findViewById(R.id.hungrynessText);
