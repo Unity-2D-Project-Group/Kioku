@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 
 public class PetSelectActivity extends AppCompatActivity {
 
-    public static int currentPet = 2;
+    public static int currentPet = 1;
     private Button petSelectButton3;
     private Button myProfileButton3;
     private Button petButton3;

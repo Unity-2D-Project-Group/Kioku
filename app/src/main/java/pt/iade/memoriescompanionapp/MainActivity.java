@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                             fruit = fruit + 1;
                             fruitText.setText(String.valueOf(fruit));
                         }
-
                         last_x = x;
                         last_y = y;
                         last_z = z;
@@ -117,20 +116,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSensorChanged(SensorEvent event) {
                 if (currentLocation == 3 && (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR)) {
                     Log.d("sensor", "step detected");
-                    if (happiness < 100 && fullness > 30 && hygiene > 30) {
-                        happiness = happiness + 5;
-                    }
-                    happinessText.setText(String.valueOf(happiness));
-
-                    if (fullness > 0) {
-                        fullness = fullness - 2;
-                    }
-                    fullnessText.setText(String.valueOf(fullness));
-
-                    if (hygiene > 0) {
-                        hygiene = hygiene - 2;
-                    }
-                    hygieneText.setText(String.valueOf(hygiene));
+                    stepStatsUpdate();
                 }
             }
 
@@ -154,6 +140,13 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("SWIPE", "Action was MOVE");
                     if (hygiene < 100) {
                         hygiene = hygiene + 1;
+                        if (activePet == 1) {
+                            petImage.setImageDrawable(getResources().getDrawable(R.drawable.pet1bath));
+                        } else if (activePet == 2) {
+                            petImage.setImageDrawable(getResources().getDrawable(R.drawable.pet2bath));
+                        }
+                    } else {
+                        petImageReset();
                     }
                     hygieneText.setText(String.valueOf(hygiene));
                     return true;
@@ -180,11 +173,7 @@ public class MainActivity extends AppCompatActivity {
         fruitText.setText(String.valueOf(fruit));
 
         activePet = PetSelectActivity.currentPet;
-        if (activePet == 1) {
-            petImage.setImageDrawable(getResources().getDrawable(R.drawable.bluekirby));
-        } else if (activePet == 2) {
-            petImage.setImageDrawable(getResources().getDrawable(R.drawable.kirby));
-        }
+        petImageReset();
 
         petSelectButton = (Button) findViewById(R.id.petSelectButton);
         petSelectButton.setOnClickListener(new View.OnClickListener() {
@@ -235,20 +224,7 @@ public class MainActivity extends AppCompatActivity {
         stepButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             Log.d("Step Button", "clicked the step button");
-            if (happiness < 100 && fullness > 30 && hygiene > 30) {
-                happiness = happiness + 5;
-            }
-            happinessText.setText(String.valueOf(happiness));
-
-            if (fullness > 0) {
-                fullness = fullness - 2;
-            }
-            fullnessText.setText(String.valueOf(fullness));
-
-            if (hygiene > 0) {
-                hygiene = hygiene - 2;
-            }
-            hygieneText.setText(String.valueOf(hygiene));
+            stepStatsUpdate();
             }
         });
 
@@ -281,27 +257,10 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             public void onClick(View v) {
                 if (currentLocation == 2) {
-                    ImageView img = (ImageView) findViewById(R.id.background);
-                    img.setImageResource(R.drawable.bathroom);
-                    currentLocation = 1;
-                    currentRoom.setText("Bathroom");
-                    feed.setVisibility(View.GONE);
-                    fruitText.setVisibility(View.GONE);
-                    fruitTextLabel.setVisibility(View.GONE);
-                    leftArrowButton.setVisibility(View.GONE);
-                    Log.d("BATHROOM", "bathroom true");
+                    bathroomScreenSetup();
                 }
                 else if (currentLocation == 3) {
-                    ImageView img = (ImageView) findViewById(R.id.background);
-                    img.setImageResource(R.drawable.forest);
-                    currentLocation = 2;
-                    currentRoom.setText("Forest");
-                    feed.setVisibility(View.VISIBLE);
-                    fruitText.setVisibility(View.VISIBLE);
-                    fruitTextLabel.setVisibility(View.VISIBLE);
-                    stepButton.setVisibility(View.GONE);
-                    rightArrowButton.setVisibility((View.VISIBLE));
-                    Log.d("FOREST", "forest true");
+                    forestScreenSetup();
                 }
                 Log.d("LEFT ARROW", "pressed left arrow");
             }
@@ -312,32 +271,77 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             public void onClick(View v) {
                 if (currentLocation == 2) {
-                    ImageView img = (ImageView) findViewById(R.id.background);
-                    img.setImageResource(R.drawable.gym);
-                    currentLocation = 3;
-                    currentRoom.setText("Gym");
-                    feed.setVisibility(View.GONE);
-                    fruitText.setVisibility(View.GONE);
-                    fruitTextLabel.setVisibility(View.GONE);
-                    stepButton.setVisibility(View.VISIBLE);
-                    rightArrowButton.setVisibility(View.GONE);
-                    Log.d("GYM", "gym true");
+                    gymScreenSetup();
                 }
                 else if (currentLocation == 1) {
-                    ImageView img = (ImageView) findViewById(R.id.background);
-                    img.setImageResource(R.drawable.forest);
-                    currentLocation = 2;
-                    currentRoom.setText("Forest");
-                    feed.setVisibility(View.VISIBLE);
-                    fruitText.setVisibility(View.VISIBLE);
-                    fruitTextLabel.setVisibility(View.VISIBLE);
-                    leftArrowButton.setVisibility(View.VISIBLE);
-                    Log.d("FOREST", "forest true");
+                    forestScreenSetup();
                 }
                 Log.d("RIGHT ARROW", "pressed right arrow");
             }
         });
 
         stepButton.setVisibility(View.GONE);
+    }
+
+    private void petImageReset() {
+        if (activePet == 1) {
+            petImage.setImageDrawable(getResources().getDrawable(R.drawable.pet1));
+        } else if (activePet == 2) {
+            petImage.setImageDrawable(getResources().getDrawable(R.drawable.pet2));
+        }
+    }
+
+    private void forestScreenSetup() {
+        ImageView img = (ImageView) findViewById(R.id.background);
+        img.setImageResource(R.drawable.forest);
+        currentLocation = 2;
+        currentRoom.setText("Forest");
+        feed.setVisibility(View.VISIBLE);
+        fruitText.setVisibility(View.VISIBLE);
+        fruitTextLabel.setVisibility(View.VISIBLE);
+        rightArrowButton.setVisibility(View.VISIBLE);
+        leftArrowButton.setVisibility(View.VISIBLE);
+        petImageReset();
+        Log.d("FOREST", "forest true");
+    }
+
+    private void bathroomScreenSetup() {
+        ImageView img = (ImageView) findViewById(R.id.background);
+        img.setImageResource(R.drawable.bathroom);
+        currentLocation = 1;
+        currentRoom.setText("Bathroom");
+        feed.setVisibility(View.GONE);
+        fruitText.setVisibility(View.GONE);
+        fruitTextLabel.setVisibility(View.GONE);
+        leftArrowButton.setVisibility(View.GONE);
+        Log.d("BATHROOM", "bathroom true");
+    }
+
+    private void gymScreenSetup() {
+        ImageView img = (ImageView) findViewById(R.id.background);
+        img.setImageResource(R.drawable.gym);
+        currentLocation = 3;
+        currentRoom.setText("Gym");
+        feed.setVisibility(View.GONE);
+        fruitText.setVisibility(View.GONE);
+        fruitTextLabel.setVisibility(View.GONE);
+        stepButton.setVisibility(View.VISIBLE);
+        rightArrowButton.setVisibility(View.GONE);
+        Log.d("GYM", "gym true");
+    }
+
+    private void stepStatsUpdate() {
+        if (happiness < 100 && fullness > 30 && hygiene > 30) {
+            happiness = happiness + 5;
+        }
+        happinessText.setText(String.valueOf(happiness));
+        if (fullness > 0) {
+            fullness = fullness - 2;
+        }
+        fullnessText.setText(String.valueOf(fullness));
+        if (hygiene > 0) {
+            hygiene = hygiene - 2;
+        }
+        hygieneText.setText(String.valueOf(hygiene));
     }
 }

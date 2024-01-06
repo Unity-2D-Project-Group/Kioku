@@ -45,7 +45,7 @@
                     android:layout_height="160dp"
                     android:backgroundTint="#7684FF"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/bluekirby" />
+                    android:src="@drawable/pet1" />
 
             </TableRow>
 
@@ -62,7 +62,7 @@
                     android:layout_height="154dp"
                     android:backgroundTint="#7684FF"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/kirby" />
+                    android:src="@drawable/pet2" />
 
             </TableRow>
 
@@ -128,6 +128,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logoImage3"
-        app:layout_constraintVertical_bias="0.255" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
