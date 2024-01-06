@@ -28,7 +28,7 @@
         android:id="@+id/logoImage"
         android:layout_width="0dp"
         android:layout_height="145dp"
-        app:layout_constraintBottom_toTopOf="@+id/happyness"
+        app:layout_constraintBottom_toTopOf="@+id/happiness"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -87,7 +87,7 @@
         android:id="@+id/petButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#7684FF"
+        android:backgroundTint="#BF7684FF"
         android:backgroundTintMode="add"
         android:text="Pet"
         android:textColorHighlight="@color/white"
@@ -149,12 +149,12 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/petImage"
-        app:layout_constraintEnd_toStartOf="@+id/happyness"
+        app:layout_constraintEnd_toStartOf="@+id/happiness"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/happynessText"
+        android:id="@+id/happinessText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -163,16 +163,16 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/happyness"
-        app:layout_constraintStart_toStartOf="@+id/happyness"
-        app:layout_constraintTop_toBottomOf="@+id/happyness" />
+        app:layout_constraintEnd_toEndOf="@+id/happiness"
+        app:layout_constraintStart_toStartOf="@+id/happiness"
+        app:layout_constraintTop_toBottomOf="@+id/happiness" />
 
     <TextView
-        android:id="@+id/happyness"
+        android:id="@+id/happiness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="Happyness"
+        android:text="Happiness"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -182,7 +182,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/hungrynessText"
+        android:id="@+id/fullnessText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -191,23 +191,23 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/hungryness"
-        app:layout_constraintStart_toStartOf="@+id/hungryness"
-        app:layout_constraintTop_toBottomOf="@+id/hungryness" />
+        app:layout_constraintEnd_toEndOf="@+id/fullness"
+        app:layout_constraintStart_toStartOf="@+id/fullness"
+        app:layout_constraintTop_toBottomOf="@+id/fullness" />
 
     <TextView
-        android:id="@+id/hungryness"
+        android:id="@+id/fullness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="Hungryness"
+        android:text="Fullness"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/petImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/happyness" />
+        app:layout_constraintStart_toEndOf="@+id/happiness" />
 
     <TextView
         android:id="@+id/fruitText"

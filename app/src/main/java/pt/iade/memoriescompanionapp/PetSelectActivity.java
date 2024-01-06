@@ -19,8 +19,8 @@ public class PetSelectActivity extends AppCompatActivity {
     private ImageButton selectPetButton2;
 
     public static int hygieneLevel;
-    public static int happynessLevel;
-    public static int hungrynessLevel;
+    public static int happinessLevel;
+    public static int fullnessLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +57,8 @@ public class PetSelectActivity extends AppCompatActivity {
         });
 
         hygieneLevel = MainActivity.hygiene;
-        happynessLevel = MainActivity.happyness;
-        hungrynessLevel = MainActivity.hungryness;
+        happinessLevel = MainActivity.happiness;
+        fullnessLevel = MainActivity.fullness;
 
         selectPetButton1 = (ImageButton) findViewById(R.id.selectPetButton1);
         selectPetButton1.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +68,8 @@ public class PetSelectActivity extends AppCompatActivity {
                 } else if (currentPet == 2) {
                     currentPet = 1;
                     MainActivity.hygiene = 100;
-                    MainActivity.happyness = 100;
-                    MainActivity.hungryness = 100;
+                    MainActivity.happiness = 100;
+                    MainActivity.fullness = 100;
                     Log.d("Pet Select Button 1", "pet selected");
                 }
             }
@@ -83,8 +83,8 @@ public class PetSelectActivity extends AppCompatActivity {
                 } else if (currentPet == 1) {
                     currentPet = 2;
                     MainActivity.hygiene = 100;
-                    MainActivity.happyness = 100;
-                    MainActivity.hungryness = 100;
+                    MainActivity.happiness = 100;
+                    MainActivity.fullness = 100;
                     Log.d("Pet Select Button 2", "pet selected");
                 }
             }

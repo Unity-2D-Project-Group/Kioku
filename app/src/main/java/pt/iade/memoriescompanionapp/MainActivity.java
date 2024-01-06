@@ -8,7 +8,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,7 +15,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -35,20 +33,19 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton leftArrowButton;
     private ImageButton rightArrowButton;
     private TextView hygieneText;
-    private TextView happynessText;
-    private TextView hungrynessText;
+    private TextView happinessText;
+    private TextView fullnessText;
     private TextView fruitText;
     private TextView fruitTextLabel;
     private TextView currentRoom;
     private ImageView petImage;
 
-    private boolean bathroom = false;
-    private boolean forest = true;
-    private boolean gym = false;
+    // 1 = Bathroom; 2 = Forest; 3 = Gym
+    public static int currentLocation = 2;
 
     public static int hygiene = 100;
-    public static int happyness = 100;
-    public static int hungryness = 100;
+    public static int happiness = 100;
+    public static int fullness = 100;
     public static int fruit = 0;
     public static int activePet;
 
@@ -83,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         sensorManager.registerListener(new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if (forest && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                if (currentLocation == 2 && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                     long curTime = System.currentTimeMillis();
                     // only allow one update every 100ms.
                     if ((curTime - lastUpdate) > 100) {
@@ -96,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                         float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-                        if (speed > SHAKE_THRESHOLD && forest) {
+                        if (speed > SHAKE_THRESHOLD && currentLocation == 2) {
                             Log.d("sensor", "shake detected w/ speed: " + speed);
                             fruit = fruit + 1;
                             fruitText.setText(String.valueOf(fruit));
@@ -118,17 +115,17 @@ public class MainActivity extends AppCompatActivity {
         sensorManager.registerListener(new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if (gym && (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR)) {
+                if (currentLocation == 3 && (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR)) {
                     Log.d("sensor", "step detected");
-                    if (happyness < 100 && hungryness > 30 && hygiene > 30) {
-                        happyness = happyness + 5;
+                    if (happiness < 100 && fullness > 30 && hygiene > 30) {
+                        happiness = happiness + 5;
                     }
-                    happynessText.setText(String.valueOf(happyness));
+                    happinessText.setText(String.valueOf(happiness));
 
-                    if (hungryness > 0) {
-                        hungryness = hungryness - 2;
+                    if (fullness > 0) {
+                        fullness = fullness - 2;
                     }
-                    hungrynessText.setText(String.valueOf(hungryness));
+                    fullnessText.setText(String.valueOf(fullness));
 
                     if (hygiene > 0) {
                         hygiene = hygiene - 2;
@@ -143,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, stepSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        if (forest) {
+        if (currentLocation == 2) {
             ImageView img = (ImageView) findViewById(R.id.background);
             img.setImageResource(R.drawable.forest);
         }
@@ -151,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (bathroom) {
+        if (currentLocation == 1) {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_MOVE):
                     Log.d("SWIPE", "Action was MOVE");
@@ -170,16 +167,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupComponents() {
         hygieneText = (TextView)findViewById(R.id.hygieneText);
-        happynessText = (TextView)findViewById(R.id.happynessText);
-        hungrynessText = (TextView)findViewById(R.id.hungrynessText);
+        happinessText = (TextView)findViewById(R.id.happinessText);
+        fullnessText = (TextView)findViewById(R.id.fullnessText);
         fruitText = (TextView)findViewById(R.id.fruitText);
         fruitTextLabel = (TextView)findViewById(R.id.fruit);
         currentRoom = (TextView)findViewById(R.id.currentRoom);
         petImage = (ImageView)findViewById(R.id.petImage);
 
         hygieneText.setText(String.valueOf(hygiene));
-        happynessText.setText(String.valueOf(happyness));
-        hungrynessText.setText(String.valueOf(hungryness));
+        happinessText.setText(String.valueOf(happiness));
+        fullnessText.setText(String.valueOf(fullness));
         fruitText.setText(String.valueOf(fruit));
 
         activePet = PetSelectActivity.currentPet;
@@ -218,13 +215,13 @@ public class MainActivity extends AppCompatActivity {
         feed.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("Feed Button", "clicked the feed button");
-                if (hungryness < 100 && fruit > 0) {
-                    hungryness = hungryness + 5;
-                    hungrynessText.setText(String.valueOf(hungryness));
+                if (fullness < 100 && fruit > 0) {
+                    fullness = fullness + 5;
+                    fullnessText.setText(String.valueOf(fullness));
                     fruit = fruit - 1;
                     fruitText.setText(String.valueOf(fruit));
                     Log.d("Feed Button", "pet fed");
-                } else if (hungryness >= 100 && fruit > 0) {
+                } else if (fullness >= 100 && fruit > 0) {
                     Toast.makeText(getApplicationContext(), "Pet Already Fed", Toast.LENGTH_LONG).show();
                     Log.d("Feed Button", "pet already fed");
                 } else if (fruit == 0) {
@@ -238,15 +235,15 @@ public class MainActivity extends AppCompatActivity {
         stepButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             Log.d("Step Button", "clicked the step button");
-            if (happyness < 100 && hungryness > 30 && hygiene > 30) {
-                happyness = happyness + 5;
+            if (happiness < 100 && fullness > 30 && hygiene > 30) {
+                happiness = happiness + 5;
             }
-            happynessText.setText(String.valueOf(happyness));
+            happinessText.setText(String.valueOf(happiness));
 
-            if (hungryness > 0) {
-                hungryness = hungryness - 2;
+            if (fullness > 0) {
+                fullness = fullness - 2;
             }
-            hungrynessText.setText(String.valueOf(hungryness));
+            fullnessText.setText(String.valueOf(fullness));
 
             if (hygiene > 0) {
                 hygiene = hygiene - 2;
@@ -259,21 +256,21 @@ public class MainActivity extends AppCompatActivity {
         reduceStats.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("Reduce Stats Button", "clicked the reduce stats button");
-                if (hygiene > 50 || happyness > 50 || hungryness > 50) {
+                if (hygiene > 50 || happiness > 50 || fullness > 50) {
                     hygiene = 50;
                     hygieneText.setText(String.valueOf(hygiene));
-                    happyness = 50;
-                    happynessText.setText(String.valueOf(happyness));
-                    hungryness = 50;
-                    hungrynessText.setText(String.valueOf(hungryness));
+                    happiness = 50;
+                    happinessText.setText(String.valueOf(happiness));
+                    fullness = 50;
+                    fullnessText.setText(String.valueOf(fullness));
                     Log.d("Reduce Stats Button", "set stats to 50");
                 } else {
                     hygiene = 0;
                     hygieneText.setText(String.valueOf(hygiene));
-                    happyness = 0;
-                    happynessText.setText(String.valueOf(happyness));
-                    hungryness = 0;
-                    hungrynessText.setText(String.valueOf(hungryness));
+                    happiness = 0;
+                    happinessText.setText(String.valueOf(happiness));
+                    fullness = 0;
+                    fullnessText.setText(String.valueOf(fullness));
                     Log.d("Reduce Stats Button", "set stats to 0");
                 }
             }
@@ -283,27 +280,27 @@ public class MainActivity extends AppCompatActivity {
         leftArrowButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             public void onClick(View v) {
-                if (forest) {
+                if (currentLocation == 2) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.bathroom);
-                    forest = false;
-                    bathroom = true;
+                    currentLocation = 1;
                     currentRoom.setText("Bathroom");
                     feed.setVisibility(View.GONE);
                     fruitText.setVisibility(View.GONE);
                     fruitTextLabel.setVisibility(View.GONE);
+                    leftArrowButton.setVisibility(View.GONE);
                     Log.d("BATHROOM", "bathroom true");
                 }
-                else if (gym) {
+                else if (currentLocation == 3) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.forest);
-                    forest = true;
-                    gym = false;
+                    currentLocation = 2;
                     currentRoom.setText("Forest");
                     feed.setVisibility(View.VISIBLE);
                     fruitText.setVisibility(View.VISIBLE);
                     fruitTextLabel.setVisibility(View.VISIBLE);
                     stepButton.setVisibility(View.GONE);
+                    rightArrowButton.setVisibility((View.VISIBLE));
                     Log.d("FOREST", "forest true");
                 }
                 Log.d("LEFT ARROW", "pressed left arrow");
@@ -314,27 +311,27 @@ public class MainActivity extends AppCompatActivity {
         rightArrowButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             public void onClick(View v) {
-                if (forest) {
+                if (currentLocation == 2) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.gym);
-                    forest = false;
-                    gym = true;
+                    currentLocation = 3;
                     currentRoom.setText("Gym");
                     feed.setVisibility(View.GONE);
                     fruitText.setVisibility(View.GONE);
                     fruitTextLabel.setVisibility(View.GONE);
                     stepButton.setVisibility(View.VISIBLE);
+                    rightArrowButton.setVisibility(View.GONE);
                     Log.d("GYM", "gym true");
                 }
-                else if (bathroom) {
+                else if (currentLocation == 1) {
                     ImageView img = (ImageView) findViewById(R.id.background);
                     img.setImageResource(R.drawable.forest);
-                    forest = true;
-                    bathroom = false;
+                    currentLocation = 2;
                     currentRoom.setText("Forest");
                     feed.setVisibility(View.VISIBLE);
                     fruitText.setVisibility(View.VISIBLE);
                     fruitTextLabel.setVisibility(View.VISIBLE);
+                    leftArrowButton.setVisibility(View.VISIBLE);
                     Log.d("FOREST", "forest true");
                 }
                 Log.d("RIGHT ARROW", "pressed right arrow");
