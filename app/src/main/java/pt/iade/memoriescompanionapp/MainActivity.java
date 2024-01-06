@@ -185,11 +185,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         petButton = (Button) findViewById(R.id.petButton);
-        petButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.d("Pet Button", "redirected to pet screen");
-            }
-        });
+        petButton.setClickable(false);
 
         myProfileButton = (Button) findViewById(R.id.myProfileButton);
         myProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -299,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
         feed.setVisibility(View.VISIBLE);
         fruitText.setVisibility(View.VISIBLE);
         fruitTextLabel.setVisibility(View.VISIBLE);
+        stepButton.setVisibility(View.GONE);
         rightArrowButton.setVisibility(View.VISIBLE);
         leftArrowButton.setVisibility(View.VISIBLE);
         petImageReset();
@@ -313,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
         feed.setVisibility(View.GONE);
         fruitText.setVisibility(View.GONE);
         fruitTextLabel.setVisibility(View.GONE);
+        stepButton.setVisibility(View.GONE);
         leftArrowButton.setVisibility(View.GONE);
         Log.d("BATHROOM", "bathroom true");
     }

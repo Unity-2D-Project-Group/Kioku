@@ -43,10 +43,6 @@ public class MyProfileActivity extends AppCompatActivity {
         });
 
         myProfileButton2 = (Button) findViewById(R.id.myProfileButton2);
-        myProfileButton2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.d("My Profile Button", "redirected to my profile screen");
-            }
-        });
+        myProfileButton2.setClickable(false);
     }
 }

@@ -43,7 +43,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/background"
-        app:srcCompat="@drawable/kirby" />
+        app:srcCompat="@drawable/pet1" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="120dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#4E57A8"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="370dp"
+        android:layout_height="75dp"
+        android:backgroundTint="#4E57A8"
+        android:clickable="false"
+        app:layout_constraintBottom_toTopOf="@+id/petImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -57,21 +78,21 @@
 
     <Button
         android:id="@+id/petSelectButton"
-        android:layout_width="wrap_content"
+        android:layout_width="115dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="#7684FF"
         android:backgroundTintMode="add"
-        android:text="Pet Select"
+        android:text="Pets"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/bottomAppBar"
         app:layout_constraintTop_toTopOf="@+id/bottomAppBar" />
 
     <Button
         android:id="@+id/myProfileButton"
-        android:layout_width="wrap_content"
+        android:layout_width="115dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -141,7 +162,7 @@
         android:id="@+id/hygiene"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="40dp"
         android:backgroundTint="#976464"
         android:text="Hygiene"
         android:textAlignment="center"
@@ -171,7 +192,7 @@
         android:id="@+id/happiness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="40dp"
         android:text="Happiness"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -199,7 +220,7 @@
         android:id="@+id/fullness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="40dp"
         android:text="Fullness"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -243,11 +264,11 @@
         android:id="@+id/feed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="#7684FF"
         android:backgroundTintMode="add"
         android:text="Feed"
-        app:layout_constraintBottom_toTopOf="@+id/currentRoom"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="@+id/fruitText"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="@+id/fruitText" />
@@ -255,7 +276,7 @@
     <Button
         android:id="@+id/reduceStats"
         android:layout_width="98dp"
-        android:layout_height="61dp"
+        android:layout_height="55dp"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="#7684FF"
@@ -270,16 +291,16 @@
         android:id="@+id/currentRoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
         android:text="Forest"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintTop_toTopOf="@+id/button" />
 
     <Button
         android:id="@+id/stepButton"

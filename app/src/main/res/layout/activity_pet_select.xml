@@ -19,7 +19,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="200dp"
         android:layout_marginBottom="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,11 +41,19 @@
 
                 <ImageButton
                     android:id="@+id/selectPetButton1"
-                    android:layout_width="188dp"
+                    android:layout_width="190dp"
                     android:layout_height="160dp"
                     android:backgroundTint="#7684FF"
                     android:scaleType="fitCenter"
                     android:src="@drawable/pet1" />
+
+                <ImageButton
+                    android:id="@+id/selectPetButton2"
+                    android:layout_width="190dp"
+                    android:layout_height="160dp"
+                    android:backgroundTint="#7684FF"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/pet2" />
 
             </TableRow>
 
@@ -57,13 +65,45 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/selectPetButton2"
+                    android:id="@+id/selectPetButton3"
                     android:layout_width="190dp"
-                    android:layout_height="154dp"
-                    android:backgroundTint="#7684FF"
+                    android:layout_height="160dp"
+                    android:backgroundTint="#4E57A8"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/pet2" />
+                    android:src="@drawable/locked" />
 
+                <ImageButton
+                    android:id="@+id/selectPetButton4"
+                    android:layout_width="190dp"
+                    android:layout_height="160dp"
+                    android:backgroundTint="#4E57A8"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/locked" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="10dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/selectPetButton5"
+                    android:layout_width="190dp"
+                    android:layout_height="160dp"
+                    android:backgroundTint="#4E57A8"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/locked" />
+
+                <ImageButton
+                    android:id="@+id/selectPetButton6"
+                    android:layout_width="190dp"
+                    android:layout_height="160dp"
+                    android:backgroundTint="#4E57A8"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/locked" />
             </TableRow>
 
         </TableLayout>
@@ -82,12 +122,12 @@
 
     <Button
         android:id="@+id/petSelectButton3"
-        android:layout_width="wrap_content"
+        android:layout_width="115dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:backgroundTint="#BF7684FF"
         android:backgroundTintMode="add"
-        android:text="Pet Select"
+        android:text="Pets"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bottomAppBar3" />
@@ -106,7 +146,7 @@
 
     <Button
         android:id="@+id/myProfileButton3"
-        android:layout_width="wrap_content"
+        android:layout_width="115dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:backgroundTint="#7684FF"

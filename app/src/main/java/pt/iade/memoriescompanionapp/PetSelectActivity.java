@@ -3,6 +3,7 @@ package pt.iade.memoriescompanionapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,10 @@ public class PetSelectActivity extends AppCompatActivity {
     private Button petButton3;
     private ImageButton selectPetButton1;
     private ImageButton selectPetButton2;
+    private ImageButton selectPetButton3;
+    private ImageButton selectPetButton4;
+    private ImageButton selectPetButton5;
+    private ImageButton selectPetButton6;
 
     public static int hygieneLevel;
     public static int happinessLevel;
@@ -28,15 +33,12 @@ public class PetSelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pet_select);
 
         setupComponents();
+        petButtonReset();
     }
 
     public void setupComponents() {
         petSelectButton3 = (Button) findViewById(R.id.petSelectButton3);
-        petSelectButton3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.d("Pet Select Button", "redirected to pet select screen");
-            }
-        });
+        petSelectButton3.setClickable(false);
 
         petButton3 = (Button) findViewById(R.id.petButton3);
         petButton3.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +73,7 @@ public class PetSelectActivity extends AppCompatActivity {
                     MainActivity.happiness = 100;
                     MainActivity.fullness = 100;
                     Log.d("Pet Select Button 1", "pet selected");
+                    petButtonReset();
                 }
             }
         });
@@ -86,8 +89,32 @@ public class PetSelectActivity extends AppCompatActivity {
                     MainActivity.happiness = 100;
                     MainActivity.fullness = 100;
                     Log.d("Pet Select Button 2", "pet selected");
+                    petButtonReset();
                 }
             }
         });
+
+        selectPetButton3 = (ImageButton) findViewById(R.id.selectPetButton3);
+        selectPetButton3.setClickable(false);
+        selectPetButton4 = (ImageButton) findViewById(R.id.selectPetButton4);
+        selectPetButton4.setClickable(false);
+        selectPetButton5 = (ImageButton) findViewById(R.id.selectPetButton5);
+        selectPetButton5.setClickable(false);
+        selectPetButton6 = (ImageButton) findViewById(R.id.selectPetButton6);
+        selectPetButton6.setClickable(false);
+    }
+
+    private void petButtonReset() {
+        if (currentPet == 1) {
+            selectPetButton1.setClickable(false);
+            selectPetButton1.setBackgroundColor(Color.argb(255, 118, 132, 255));
+            selectPetButton2.setClickable(true);
+            selectPetButton2.setBackgroundColor(Color.argb(200, 118, 132, 255));
+        } else if (currentPet == 2) {
+            selectPetButton1.setClickable(true);
+            selectPetButton1.setBackgroundColor(Color.argb(200, 118, 132, 255));
+            selectPetButton2.setClickable(false);
+            selectPetButton2.setBackgroundColor(Color.argb(255, 118, 132, 255));
+        }
     }
 }
