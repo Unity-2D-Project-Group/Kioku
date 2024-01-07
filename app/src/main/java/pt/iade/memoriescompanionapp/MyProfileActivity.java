@@ -9,11 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import pt.iade.memoriescompanionapp.data.model.Consts;
+import pt.iade.memoriescompanionapp.data.model.LoggedInUser;
+
 public class MyProfileActivity extends AppCompatActivity {
 
     private Button petSelectButton2;
     private Button myProfileButton2;
     private Button petButton2;
+    private TextView playerUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,5 +48,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
         myProfileButton2 = (Button) findViewById(R.id.myProfileButton2);
         myProfileButton2.setClickable(false);
+
+        playerUsername = (TextView) findViewById(R.id.usernameShow);
+        playerUsername.setText(Consts.currentUser.getDisplayName());
     }
 }

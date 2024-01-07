@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import pt.iade.memoriescompanionapp.MainActivity;
 import pt.iade.memoriescompanionapp.MyProfileActivity;
 import pt.iade.memoriescompanionapp.R;
+import pt.iade.memoriescompanionapp.data.model.Consts;
 import pt.iade.memoriescompanionapp.ui.login.LoginViewModel;
 import pt.iade.memoriescompanionapp.ui.login.LoginViewModelFactory;
 import pt.iade.memoriescompanionapp.databinding.ActivityLoginBinding;
@@ -80,9 +82,6 @@ public class LoginActivity extends AppCompatActivity {
                     updateUiWithUser(loginResult.getSuccess());
                 }
                 setResult(Activity.RESULT_OK);
-
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -123,6 +122,9 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
+                if(Consts.currentUser != null){
+
+                }
             }
         });
     }
@@ -131,6 +133,9 @@ public class LoginActivity extends AppCompatActivity {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
