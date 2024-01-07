@@ -1,4 +1,4 @@
-package pt.iade.memoriescompanionapp.ui.login;
+package pt.iade.memoriescompanionapp.classes;
 
 public class APIUser {
     public String username;

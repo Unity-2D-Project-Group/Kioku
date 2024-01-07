@@ -1,10 +1,14 @@
 package pt.iade.memoriescompanionapp.utilities;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -44,6 +48,33 @@ public class WebRequest {
         }
 
         return result;
+    }
+
+    public String performPatchRequest(HashMap<String, String> params) throws IOException, URISyntaxException {
+        try {
+            URI uri = buildUri(null);
+            HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
+
+            connection.setRequestMethod("PATCH");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+
+            String jsonInputString = new Gson().toJson(params);
+            OutputStream os = connection.getOutputStream();
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+
+            System.out.println("Response Code: " + connection.getResponseCode());
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String response = br.readLine();
+
+            connection.disconnect();
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public void performPostRequest(HashMap<String, String> params) throws IOException, URISyntaxException {

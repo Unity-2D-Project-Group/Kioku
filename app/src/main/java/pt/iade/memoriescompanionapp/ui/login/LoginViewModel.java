@@ -4,16 +4,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.util.Patterns;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -21,6 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import pt.iade.memoriescompanionapp.classes.APIUser;
 import pt.iade.memoriescompanionapp.data.LoginRepository;
 import pt.iade.memoriescompanionapp.data.Result;
 import pt.iade.memoriescompanionapp.data.model.LoggedInUser;

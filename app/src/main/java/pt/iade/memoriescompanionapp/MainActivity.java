@@ -22,6 +22,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import pt.iade.memoriescompanionapp.classes.APIMsg;
+import pt.iade.memoriescompanionapp.classes.APIPet;
+import pt.iade.memoriescompanionapp.classes.APIUser;
+import pt.iade.memoriescompanionapp.classes.APIUserInfo;
+import pt.iade.memoriescompanionapp.data.Result;
+import pt.iade.memoriescompanionapp.data.model.Consts;
+import pt.iade.memoriescompanionapp.utilities.WebRequest;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button petSelectButton;
@@ -95,8 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (speed > SHAKE_THRESHOLD && currentLocation == 2) {
                             Log.d("sensor", "shake detected w/ speed: " + speed);
-                            fruit = fruit + 1;
-                            fruitText.setText(String.valueOf(fruit));
+                            AddFruit();
                         }
                         last_x = x;
                         last_y = y;
@@ -138,8 +157,9 @@ public class MainActivity extends AppCompatActivity {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_MOVE):
                     Log.d("SWIPE", "Action was MOVE");
-                    if (hygiene < 100) {
-                        hygiene = hygiene + 1;
+                    bathStatsUpdate();
+                    if (Integer.valueOf((String)hygieneText.getText()) < 100) {
+
                         if (activePet == 1) {
                             petImage.setImageDrawable(getResources().getDrawable(R.drawable.pet1bath));
                         } else if (activePet == 2) {
@@ -148,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         petImageReset();
                     }
-                    hygieneText.setText(String.valueOf(hygiene));
                     return true;
                 default:
                     return super.onTouchEvent(event);
@@ -200,19 +219,7 @@ public class MainActivity extends AppCompatActivity {
         feed.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("Feed Button", "clicked the feed button");
-                if (fullness < 100 && fruit > 0) {
-                    fullness = fullness + 5;
-                    fullnessText.setText(String.valueOf(fullness));
-                    fruit = fruit - 1;
-                    fruitText.setText(String.valueOf(fruit));
-                    Log.d("Feed Button", "pet fed");
-                } else if (fullness >= 100 && fruit > 0) {
-                    Toast.makeText(getApplicationContext(), "Pet Already Fed", Toast.LENGTH_LONG).show();
-                    Log.d("Feed Button", "pet already fed");
-                } else if (fruit == 0) {
-                    Toast.makeText(getApplicationContext(), "No fruits", Toast.LENGTH_LONG).show();
-                    Log.d("Feed Button", "no fruit");
-                }
+                feedStatsUpdate();
             }
         });
 
@@ -277,6 +284,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         stepButton.setVisibility(View.GONE);
+        GetPetStats();
+        GetUserInfo();
     }
 
     private void petImageReset() {
@@ -328,18 +337,174 @@ public class MainActivity extends AppCompatActivity {
         Log.d("GYM", "gym true");
     }
 
+    private void AddFruit(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        Future<String> future = executorService.submit(() -> {
+            try {
+                WebRequest webRequest = new WebRequest(
+                        new URL(WebRequest.LOCALHOST + "/users/fruits"));
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", Consts.currentUser.getUserId());
+
+                String result = webRequest.performPatchRequest(params);
+                return result;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Error";
+        });
+
+        try {
+            String result = future.get();
+            GetUserInfo();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executorService.shutdown();
+        }
+    }
+
+    private void feedStatsUpdate(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        Future<String> future = executorService.submit(() -> {
+            try {
+                WebRequest webRequest = new WebRequest(
+                        new URL(WebRequest.LOCALHOST + "/pets/feed"));
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", Consts.currentUser.getUserId());
+
+                String result = webRequest.performPatchRequest(params);
+                return result;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Error";
+        });
+
+        try {
+            String result = future.get();
+
+            GetUserInfo();
+            GetPetStats();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executorService.shutdown();
+        }
+    }
+
     private void stepStatsUpdate() {
-        if (happiness < 100 && fullness > 30 && hygiene > 30) {
-            happiness = happiness + 5;
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        Future<String> future = executorService.submit(() -> {
+            try {
+                WebRequest webRequest = new WebRequest(
+                        new URL(WebRequest.LOCALHOST + "/pets/exercise"));
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", Consts.currentUser.getUserId());
+
+                String result = webRequest.performPatchRequest(params);
+                return result;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Error";
+        });
+
+        try {
+            String result = future.get();
+            GetPetStats();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executorService.shutdown();
         }
-        happinessText.setText(String.valueOf(happiness));
-        if (fullness > 0) {
-            fullness = fullness - 2;
+    }
+
+    private void bathStatsUpdate() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        Future<String> future = executorService.submit(() -> {
+            try {
+                WebRequest webRequest = new WebRequest(
+                        new URL(WebRequest.LOCALHOST + "/pets/bath"));
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", Consts.currentUser.getUserId());
+
+                String result = webRequest.performPatchRequest(params);
+                return result;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Error";
+        });
+
+        try {
+            String result = future.get();
+
+            GetPetStats();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executorService.shutdown();
         }
-        fullnessText.setText(String.valueOf(fullness));
-        if (hygiene > 0) {
-            hygiene = hygiene - 2;
-        }
-        hygieneText.setText(String.valueOf(hygiene));
+    }
+
+    private void GetPetStats() {
+        Thread thread = new Thread(new Runnable() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void run() {
+                try {
+                    WebRequest webRequest = new WebRequest(
+                            new URL(WebRequest.LOCALHOST + "/pets/current"));
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", Consts.currentUser.getUserId());
+
+                    String pet = webRequest.performGetRequest(params);
+                    Gson gson = new Gson();
+
+                    JsonObject jsonObject = JsonParser.parseString(pet).getAsJsonObject();
+
+                    // Define the Java class you want to convert the JSON data into
+                    APIPet petObject = gson.fromJson(jsonObject, APIPet.class);
+                    hygieneText.setText(petObject.hygiene.toString());
+                    happinessText.setText(petObject.happiness.toString());
+                    fullnessText.setText(petObject.hungry.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
+
+    private void GetUserInfo() {
+        Thread thread = new Thread(new Runnable() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void run() {
+                try {
+                    WebRequest webRequest = new WebRequest(
+                            new URL(WebRequest.LOCALHOST + "/users/"));
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", Consts.currentUser.getUserId());
+
+                    String user = webRequest.performGetRequest(params);
+                    Gson gson = new Gson();
+
+                    JsonObject jsonObject = JsonParser.parseString(user).getAsJsonObject();
+
+                    // Define the Java class you want to convert the JSON data into
+                    APIUserInfo userObject = gson.fromJson(jsonObject, APIUserInfo.class);
+                    fruitText.setText(userObject.fruits.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 }
