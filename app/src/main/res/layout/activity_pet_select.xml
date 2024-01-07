@@ -151,7 +151,7 @@
         android:layout_marginEnd="10dp"
         android:backgroundTint="#7684FF"
         android:backgroundTintMode="add"
-        android:text="My Profile"
+        android:text="Profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bottomAppBar3" />
