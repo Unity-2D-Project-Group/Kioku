@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                         if (speed > SHAKE_THRESHOLD && currentLocation == 2) {
                             Log.d("sensor", "shake detected w/ speed: " + speed);
                             AddFruit();
+                            UpdateStats();
                         }
                         last_x = x;
                         last_y = y;
@@ -157,12 +158,11 @@ public class MainActivity extends AppCompatActivity {
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_MOVE):
                     Log.d("SWIPE", "Action was MOVE");
-                    bathStatsUpdate();
-                    if (Integer.valueOf((String)hygieneText.getText()) < 100) {
-
-                        if (activePet == 1) {
+                    if (Integer.parseInt((String)hygieneText.getText()) < 100) {
+                        bathStatsUpdate();
+                        if (Consts.currentPet.pet_id == 1) {
                             petImage.setImageDrawable(getResources().getDrawable(R.drawable.pet1bath));
-                        } else if (activePet == 2) {
+                        } else if (Consts.currentPet.pet_id == 2) {
                             petImage.setImageDrawable(getResources().getDrawable(R.drawable.pet2bath));
                         }
                     } else {
@@ -216,7 +216,9 @@ public class MainActivity extends AppCompatActivity {
         feed.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("Feed Button", "clicked the feed button");
-                feedStatsUpdate();
+                if (Integer.parseInt((String)fullnessText.getText()) < 100) {
+                    feedStatsUpdate();
+                }
             }
         });
 
@@ -232,7 +234,9 @@ public class MainActivity extends AppCompatActivity {
         reduceStats.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("Reduce Stats Button", "clicked the reduce stats button");
-                reduceStats();
+                if (Integer.parseInt((String)fullnessText.getText()) > 3 || Integer.parseInt((String)hygieneText.getText()) > 3 || Integer.parseInt((String)happinessText.getText()) > 3) {
+                    reduceStats();
+                }
             }
         });
 
@@ -372,7 +376,11 @@ public class MainActivity extends AppCompatActivity {
             JsonObject jsonObject = JsonParser.parseString(result).getAsJsonObject();
             APIMsg msg = gson.fromJson(jsonObject, APIMsg.class);
             if (msg.msg != "Feed successfuly done!") {
-                Toast.makeText(this,msg.msg, Toast.LENGTH_SHORT).show();
+                if (Integer.valueOf((String)fullnessText.getText()) < 100) {
+                    Log.d("Feed Button", "pet fed");
+                } else {
+                    Log.d("Feed Button", "pet already fed");
+                }
             }
             GetUserInfo();
             GetPetStats();
@@ -383,6 +391,7 @@ public class MainActivity extends AppCompatActivity {
             executorService.shutdown();
         }
     }
+
     private void reduceStats(){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -438,7 +447,7 @@ public class MainActivity extends AppCompatActivity {
             JsonObject jsonObject = JsonParser.parseString(result).getAsJsonObject();
             APIMsg msg = gson.fromJson(jsonObject, APIMsg.class);
             if (msg.msg != "Exercise successfuly done!") {
-                Toast.makeText(this,msg.msg, Toast.LENGTH_SHORT).show();
+                Log.d("Step Button", "stepped");
             }
             GetPetStats();
             UpdateStats();
@@ -514,6 +523,8 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void UpdateStats(){
+        GetPetStats();
+        GetUserInfo();
         petImageReset();
         hygieneText.setText(Consts.currentPet.hygiene.toString());
         happinessText.setText(Consts.currentPet.happiness.toString());
