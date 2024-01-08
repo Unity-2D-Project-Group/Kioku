@@ -232,23 +232,7 @@ public class MainActivity extends AppCompatActivity {
         reduceStats.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("Reduce Stats Button", "clicked the reduce stats button");
-                if (hygiene > 50 || happiness > 50 || fullness > 50) {
-                    hygiene = 50;
-                    hygieneText.setText(String.valueOf(hygiene));
-                    happiness = 50;
-                    happinessText.setText(String.valueOf(happiness));
-                    fullness = 50;
-                    fullnessText.setText(String.valueOf(fullness));
-                    Log.d("Reduce Stats Button", "set stats to 50");
-                } else {
-                    hygiene = 0;
-                    hygieneText.setText(String.valueOf(hygiene));
-                    happiness = 0;
-                    happinessText.setText(String.valueOf(happiness));
-                    fullness = 0;
-                    fullnessText.setText(String.valueOf(fullness));
-                    Log.d("Reduce Stats Button", "set stats to 0");
-                }
+                reduceStats();
             }
         });
 
@@ -390,6 +374,35 @@ public class MainActivity extends AppCompatActivity {
             if (msg.msg != "Feed successfuly done!") {
                 Toast.makeText(this,msg.msg, Toast.LENGTH_SHORT).show();
             }
+            GetUserInfo();
+            GetPetStats();
+            UpdateStats();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executorService.shutdown();
+        }
+    }
+    private void reduceStats(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        Future<String> future = executorService.submit(() -> {
+            try {
+                WebRequest webRequest = new WebRequest(
+                        new URL(WebRequest.LOCALHOST + "/pets/reduceStats"));
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", Consts.currentUser.getUserId());
+
+                String result = webRequest.performPatchRequest(params);
+                return result;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Error";
+        });
+
+        try {
+            String result = future.get();
             GetUserInfo();
             GetPetStats();
             UpdateStats();
