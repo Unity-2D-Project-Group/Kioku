@@ -282,8 +282,8 @@ public class MainActivity extends AppCompatActivity {
 
         stepButton.setVisibility(View.GONE);
         GetPetStats();
-        UpdateStats();
         GetUserInfo();
+        UpdateStats();
         petImageReset();
     }
 
