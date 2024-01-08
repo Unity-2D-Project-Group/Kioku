@@ -61,17 +61,21 @@ public class WebRequest {
 
             String jsonInputString = new Gson().toJson(params);
             OutputStream os = connection.getOutputStream();
-            byte[] input = jsonInputString.getBytes("utf-8");
+            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
+            connection.connect();
 
             System.out.println("Response Code: " + connection.getResponseCode());
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader br;
+            if(connection.getResponseCode() == 200)
+                br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+            else
+                br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8));
             String response = br.readLine();
 
             connection.disconnect();
             return response;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return "";
         }

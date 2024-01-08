@@ -191,9 +191,6 @@ public class MainActivity extends AppCompatActivity {
         fullnessText.setText(String.valueOf(fullness));
         fruitText.setText(String.valueOf(fruit));
 
-        activePet = PetSelectActivity.currentPet;
-        petImageReset();
-
         petSelectButton = (Button) findViewById(R.id.petSelectButton);
         petSelectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -285,13 +282,15 @@ public class MainActivity extends AppCompatActivity {
 
         stepButton.setVisibility(View.GONE);
         GetPetStats();
+        UpdateStats();
         GetUserInfo();
+        petImageReset();
     }
 
     private void petImageReset() {
-        if (activePet == 1) {
+        if (Consts.currentPet.pet_id == 1) {
             petImage.setImageDrawable(getResources().getDrawable(R.drawable.pet1));
-        } else if (activePet == 2) {
+        } else if (Consts.currentPet.pet_id == 2) {
             petImage.setImageDrawable(getResources().getDrawable(R.drawable.pet2));
         }
     }
@@ -385,9 +384,15 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             String result = future.get();
-
+            Gson gson = new Gson();
+            JsonObject jsonObject = JsonParser.parseString(result).getAsJsonObject();
+            APIMsg msg = gson.fromJson(jsonObject, APIMsg.class);
+            if (msg.msg != "Feed successfuly done!") {
+                Toast.makeText(this,msg.msg, Toast.LENGTH_SHORT).show();
+            }
             GetUserInfo();
             GetPetStats();
+            UpdateStats();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         } finally {
@@ -415,7 +420,15 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             String result = future.get();
+
+            Gson gson = new Gson();
+            JsonObject jsonObject = JsonParser.parseString(result).getAsJsonObject();
+            APIMsg msg = gson.fromJson(jsonObject, APIMsg.class);
+            if (msg.msg != "Exercise successfuly done!") {
+                Toast.makeText(this,msg.msg, Toast.LENGTH_SHORT).show();
+            }
             GetPetStats();
+            UpdateStats();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         } finally {
@@ -445,6 +458,7 @@ public class MainActivity extends AppCompatActivity {
             String result = future.get();
 
             GetPetStats();
+            UpdateStats();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         } finally {
@@ -452,59 +466,78 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void GetPetStats() {
-        Thread thread = new Thread(new Runnable() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void run() {
-                try {
-                    WebRequest webRequest = new WebRequest(
-                            new URL(WebRequest.LOCALHOST + "/pets/current"));
-                    HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("user_id", Consts.currentUser.getUserId());
+    public static void GetPetStats() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-                    String pet = webRequest.performGetRequest(params);
-                    Gson gson = new Gson();
+        Future<String> future = executorService.submit(() -> {
+            try {
+                WebRequest webRequest = new WebRequest(
+                        new URL(WebRequest.LOCALHOST + "/pets/current"));
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", Consts.currentUser.getUserId());
 
-                    JsonObject jsonObject = JsonParser.parseString(pet).getAsJsonObject();
+                String pet = webRequest.performGetRequest(params);
+                Gson gson = new Gson();
 
-                    // Define the Java class you want to convert the JSON data into
-                    APIPet petObject = gson.fromJson(jsonObject, APIPet.class);
-                    hygieneText.setText(petObject.hygiene.toString());
-                    happinessText.setText(petObject.happiness.toString());
-                    fullnessText.setText(petObject.hungry.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                JsonObject jsonObject = JsonParser.parseString(pet).getAsJsonObject();
+
+                // Define the Java class you want to convert the JSON data into
+                Consts.currentPet = gson.fromJson(jsonObject, APIPet.class);
+                return "Done";
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return "Error";
         });
-        thread.start();
+
+        try {
+            String result = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executorService.shutdown();
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void UpdateStats(){
+        petImageReset();
+        hygieneText.setText(Consts.currentPet.hygiene.toString());
+        happinessText.setText(Consts.currentPet.happiness.toString());
+        fullnessText.setText(Consts.currentPet.hungry.toString());
     }
 
     private void GetUserInfo() {
-        Thread thread = new Thread(new Runnable() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void run() {
-                try {
-                    WebRequest webRequest = new WebRequest(
-                            new URL(WebRequest.LOCALHOST + "/users/"));
-                    HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("user_id", Consts.currentUser.getUserId());
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-                    String user = webRequest.performGetRequest(params);
-                    Gson gson = new Gson();
+        @SuppressLint("SetTextI18n") Future<String> future = executorService.submit(() -> {
+            try {
+                WebRequest webRequest = new WebRequest(
+                        new URL(WebRequest.LOCALHOST + "/users/"));
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("user_id", Consts.currentUser.getUserId());
 
-                    JsonObject jsonObject = JsonParser.parseString(user).getAsJsonObject();
+                String user = webRequest.performGetRequest(params);
+                Gson gson = new Gson();
 
-                    // Define the Java class you want to convert the JSON data into
-                    APIUserInfo userObject = gson.fromJson(jsonObject, APIUserInfo.class);
-                    fruitText.setText(userObject.fruits.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                JsonObject jsonObject = JsonParser.parseString(user).getAsJsonObject();
+
+                // Define the Java class you want to convert the JSON data into
+                APIUserInfo userObject = gson.fromJson(jsonObject, APIUserInfo.class);
+                fruitText.setText(userObject.fruits.toString());
+                return "Done";
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return "Error";
         });
-        thread.start();
+
+        try {
+            String result = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executorService.shutdown();
+        }
     }
 }
