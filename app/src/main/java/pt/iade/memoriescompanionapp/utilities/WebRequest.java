@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class WebRequest {
-    public final static String LOCALHOST = "http://10.0.2.2:5000";
+    public final static String LOCALHOST = "http://memories.games3.iade.xyz";
 
     protected URL url;
 

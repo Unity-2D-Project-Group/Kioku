@@ -13,6 +13,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -81,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
     private float last_x;
     private float last_y;
     private float last_z;
+
+    private Handler counter;
 
     protected static final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 102;
 
@@ -278,10 +281,16 @@ public class MainActivity extends AppCompatActivity {
             reduceStats.setVisibility(View.GONE);
         }
 
-        GetPetStats();
-        GetUserInfo();
-        UpdateStats();
-        petImageReset();
+        counter = new Handler();
+        counter.postDelayed(new Runnable() {
+            public void run() {
+                counter.postDelayed(this, 1000);
+                GetPetStats();
+                GetUserInfo();
+                UpdateStats();
+                petImageReset();
+            }
+        }, 60000);
     }
 
     private void petImageReset() {
