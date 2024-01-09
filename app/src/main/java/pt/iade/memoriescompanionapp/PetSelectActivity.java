@@ -50,13 +50,13 @@ public class PetSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_select);
 
-
         setupComponents();
         petButtonReset();
     }
 
     public void setupComponents() {
         GetAllPets();
+
         petSelectButton3 = (Button) findViewById(R.id.petSelectButton3);
         petSelectButton3.setClickable(false);
 
@@ -108,11 +108,11 @@ public class PetSelectActivity extends AppCompatActivity {
         selectPetButton6.setClickable(false);
 
         for (APIPet pet: Consts.allPets.result) {
-            if(pet.pet_id == 1){
+            if (pet.pet_id == 1) {
                 selectPetButton1.setImageResource(R.drawable.pet1);
                 selectPetButton1.setBackgroundColor(Color.parseColor("#7684FF"));
                 selectPetButton1.setClickable(true);
-            }else if(pet.pet_id == 2){
+            } else if (pet.pet_id == 2) {
                 selectPetButton2.setImageResource(R.drawable.pet2);
                 selectPetButton2.setBackgroundColor(Color.parseColor("#7684FF"));
                 selectPetButton2.setClickable(true);

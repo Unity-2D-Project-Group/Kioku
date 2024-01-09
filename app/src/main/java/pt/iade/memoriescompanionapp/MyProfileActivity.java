@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import pt.iade.memoriescompanionapp.data.model.Consts;
-import pt.iade.memoriescompanionapp.data.model.LoggedInUser;
 
 public class MyProfileActivity extends AppCompatActivity {
 
@@ -18,6 +18,8 @@ public class MyProfileActivity extends AppCompatActivity {
     private Button myProfileButton2;
     private Button petButton2;
     private TextView playerUsername;
+    private Switch debugSwitch;
+    public static boolean switchState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,5 +53,21 @@ public class MyProfileActivity extends AppCompatActivity {
 
         playerUsername = (TextView) findViewById(R.id.usernameShow);
         playerUsername.setText(Consts.currentUser.getDisplayName());
+
+        debugSwitch = (Switch) findViewById(R.id.debugSwitch);
+        debugSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (debugSwitch.isChecked()) {
+                    switchState = true;
+                } else {
+                    switchState = false;
+                }
+            }
+        });
+
+        if (switchState) {
+            debugSwitch.setChecked(true);
+        }
     }
 }

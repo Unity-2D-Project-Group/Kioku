@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView currentRoom;
     private ImageView petImage;
 
+    private boolean debugMode;
+
     // 1 = Bathroom; 2 = Forest; 3 = Gym
     public static int currentLocation = 2;
 
@@ -67,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     public static int happiness = 100;
     public static int fullness = 100;
     public static int fruit = 0;
-    public static int activePet;
 
     private SensorManager sensorManager;
     private Sensor accelSensor;
@@ -268,7 +269,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        stepButton.setVisibility(View.GONE);
+        debugMode = MyProfileActivity.switchState;
+        if (debugMode) {
+            stepButton.setVisibility(View.VISIBLE);
+            reduceStats.setVisibility(View.VISIBLE);
+        } else {
+            stepButton.setVisibility(View.GONE);
+            reduceStats.setVisibility(View.GONE);
+        }
+
         GetPetStats();
         GetUserInfo();
         UpdateStats();
@@ -291,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
         feed.setVisibility(View.VISIBLE);
         fruitText.setVisibility(View.VISIBLE);
         fruitTextLabel.setVisibility(View.VISIBLE);
-        stepButton.setVisibility(View.GONE);
         rightArrowButton.setVisibility(View.VISIBLE);
         leftArrowButton.setVisibility(View.VISIBLE);
         petImageReset();
@@ -306,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
         feed.setVisibility(View.GONE);
         fruitText.setVisibility(View.GONE);
         fruitTextLabel.setVisibility(View.GONE);
-        stepButton.setVisibility(View.GONE);
         leftArrowButton.setVisibility(View.GONE);
         Log.d("BATHROOM", "bathroom true");
     }
@@ -319,7 +326,6 @@ public class MainActivity extends AppCompatActivity {
         feed.setVisibility(View.GONE);
         fruitText.setVisibility(View.GONE);
         fruitTextLabel.setVisibility(View.GONE);
-        stepButton.setVisibility(View.VISIBLE);
         rightArrowButton.setVisibility(View.GONE);
         Log.d("GYM", "gym true");
     }
