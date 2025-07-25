@@ -5,9 +5,9 @@
 <br/>
 Give them baths and shake your phone to make fruit fall off of trees so you can feed them. Go out walking with your phone so they can also exercise.
 <hr/>
-<img width="240" height="508.2" alt="Screenshot_20240108_232728" src="https://github.com/user-attachments/assets/f40834cd-5b32-4d00-b693-d6f512916468" />
-<img width="240" height="508.2" alt="Screenshot_20240108_232612" src="https://github.com/user-attachments/assets/7b3039d4-ec75-4ea8-951e-1e1b55f1fe34" />
-<img width="240" height="508.2" alt="Screenshot_20240109_192727" src="https://github.com/user-attachments/assets/02347ee5-5998-4c48-90df-1364bfe4cbe4" />
+<img align="left" width="240" height="508.2" alt="Screenshot_20240108_232728" src="https://github.com/user-attachments/assets/f40834cd-5b32-4d00-b693-d6f512916468" />
+<img align="center" width="240" height="508.2" alt="Screenshot_20240108_232612" src="https://github.com/user-attachments/assets/7b3039d4-ec75-4ea8-951e-1e1b55f1fe34" />
+<img align="right" width="240" height="508.2" alt="Screenshot_20240109_192727" src="https://github.com/user-attachments/assets/02347ee5-5998-4c48-90df-1364bfe4cbe4" />
 <br/>
 <br/>
 Pets are a purely cosmetic feature in Memories. Pets accompany the player throughout the characters adventures, hovering behind the player during gameplay.
